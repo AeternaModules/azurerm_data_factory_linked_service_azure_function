@@ -1,3 +1,7 @@
+output "data_factory_linked_service_azure_functions_id" {
+  description = "Map of id values across all data_factory_linked_service_azure_functions, keyed the same as var.data_factory_linked_service_azure_functions"
+  value       = { for k, v in azurerm_data_factory_linked_service_azure_function.data_factory_linked_service_azure_functions : k => v.id }
+}
 output "data_factory_linked_service_azure_functions_additional_properties" {
   description = "Map of additional_properties values across all data_factory_linked_service_azure_functions, keyed the same as var.data_factory_linked_service_azure_functions"
   value       = { for k, v in azurerm_data_factory_linked_service_azure_function.data_factory_linked_service_azure_functions : k => v.additional_properties }
