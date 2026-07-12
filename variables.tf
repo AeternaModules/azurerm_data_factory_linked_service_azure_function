@@ -11,6 +11,8 @@ Optional:
     - description
     - integration_runtime_name
     - key
+    - key_key_vault_id (alternative to key - read from Key Vault instead)
+    - key_key_vault_secret_name (alternative to key - read from Key Vault instead)
     - parameters
     - key_vault_key (block):
         - linked_service_name (required)
@@ -18,15 +20,17 @@ Optional:
 EOT
 
   type = map(object({
-    data_factory_id          = string
-    name                     = string
-    url                      = string
-    additional_properties    = optional(map(string))
-    annotations              = optional(list(string))
-    description              = optional(string)
-    integration_runtime_name = optional(string)
-    key                      = optional(string)
-    parameters               = optional(map(string))
+    data_factory_id           = string
+    name                      = string
+    url                       = string
+    additional_properties     = optional(map(string))
+    annotations               = optional(list(string))
+    description               = optional(string)
+    integration_runtime_name  = optional(string)
+    key                       = optional(string)
+    key_key_vault_id          = optional(string)
+    key_key_vault_secret_name = optional(string)
+    parameters                = optional(map(string))
     key_vault_key = optional(object({
       linked_service_name = string
       secret_name         = string

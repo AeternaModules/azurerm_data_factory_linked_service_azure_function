@@ -1,3 +1,8 @@
+data "azurerm_key_vault_secret" "key" {
+  for_each     = { for k, v in var.data_factory_linked_service_azure_functions : k => v if v.key_key_vault_id != null && v.key_key_vault_secret_name != null }
+  name         = each.value.key_key_vault_secret_name
+  key_vault_id = each.value.key_key_vault_id
+}
 resource "azurerm_data_factory_linked_service_azure_function" "data_factory_linked_service_azure_functions" {
   for_each = var.data_factory_linked_service_azure_functions
 
@@ -8,7 +13,7 @@ resource "azurerm_data_factory_linked_service_azure_function" "data_factory_link
   annotations              = each.value.annotations
   description              = each.value.description
   integration_runtime_name = each.value.integration_runtime_name
-  key                      = each.value.key
+  key                      = each.value.key != null ? each.value.key : try(data.azurerm_key_vault_secret.key[each.key].value, null)
   parameters               = each.value.parameters
 
   dynamic "key_vault_key" {
