@@ -36,38 +36,6 @@ EOT
       secret_name         = string
     }))
   }))
-  validation {
-    condition = alltrue([
-      for k, v in var.data_factory_linked_service_azure_functions : (
-        length(v.url) > 0
-      )
-    ])
-    error_message = "must not be empty"
-  }
-  validation {
-    condition = alltrue([
-      for k, v in var.data_factory_linked_service_azure_functions : (
-        v.key == null || (length(v.key) > 0)
-      )
-    ])
-    error_message = "must not be empty"
-  }
-  validation {
-    condition = alltrue([
-      for k, v in var.data_factory_linked_service_azure_functions : (
-        v.description == null || (length(v.description) > 0)
-      )
-    ])
-    error_message = "must not be empty"
-  }
-  validation {
-    condition = alltrue([
-      for k, v in var.data_factory_linked_service_azure_functions : (
-        v.integration_runtime_name == null || (length(v.integration_runtime_name) > 0)
-      )
-    ])
-    error_message = "must not be empty"
-  }
   # --- Unconfirmed validation candidates, derived from azurerm_data_factory_linked_service_azure_function's provider source ---
   # Not auto-enabled: either a bespoke provider validator we can't safely translate,
   # or a path that crosses a list-typed block (needs its own for_each wrapping).
@@ -78,6 +46,15 @@ EOT
   #   source:    [from factories.ValidateFactoryID] !ok
   # path: data_factory_id
   #   source:    [from factories.ValidateFactoryID] err != nil
+  # path: url
+  #   condition: length(value) > 0
+  #   message:   must not be empty
+  # path: key
+  #   condition: length(value) > 0
+  #   message:   must not be empty
+  # path: description
+  #   condition: length(value) > 0
+  #   message:   must not be empty
   # path: key_vault_key.linked_service_name
   #   source:    [from validate.LinkedServiceDatasetName] regexp.MustCompile(`^[-.+?/<>*%&:\\]+$`).MatchString(value)
   # path: key_vault_key.secret_name
@@ -88,5 +65,8 @@ EOT
   #   source:    [from keyvault.ValidateNestedItemName: invalid when len(value) > 127]
   # path: key_vault_key.secret_name
   #   source:    [from keyvault.ValidateNestedItemName] !regexp.MustCompile(`^[0-9a-zA-Z-]+$`).MatchString(v.(string))
+  # path: integration_runtime_name
+  #   condition: length(value) > 0
+  #   message:   must not be empty
 }
 
