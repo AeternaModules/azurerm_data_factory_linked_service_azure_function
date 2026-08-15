@@ -29,7 +29,7 @@ output "data_factory_linked_service_azure_functions_key" {
 }
 output "data_factory_linked_service_azure_functions_key_vault_key" {
   description = "Map of key_vault_key values across all data_factory_linked_service_azure_functions, keyed the same as var.data_factory_linked_service_azure_functions"
-  value       = { for k, v in azurerm_data_factory_linked_service_azure_function.data_factory_linked_service_azure_functions : k => v.key_vault_key if v.key_vault_key != null && length(v.key_vault_key) > 0 }
+  value       = { for k, v in azurerm_data_factory_linked_service_azure_function.data_factory_linked_service_azure_functions : k => one(v.key_vault_key) if v.key_vault_key != null && length(v.key_vault_key) > 0 }
 }
 output "data_factory_linked_service_azure_functions_name" {
   description = "Map of name values across all data_factory_linked_service_azure_functions, keyed the same as var.data_factory_linked_service_azure_functions"
